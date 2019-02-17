@@ -1,28 +1,68 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react'
+import moment, { weekdaysMin } from 'moment'
+import classnames from 'classnames'
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
+const columnDay = (index, days) => {
+  if (index === 0) {
+    return days[0].day() + 1
   }
 }
 
-export default App;
+const today = day => moment().isSame(day, 'day')
+const month = (date = new Date()) => moment(date).format('MMMM')
+
+class App extends Component {
+  constructor (props) {
+    super(props)
+
+    this.state = {
+      days: [],
+    }
+  }
+
+  componentDidMount () {
+    this.updateMonthDays()
+  }
+
+  updateMonthDays = () => {
+    const monthDate = moment().startOf('month')
+
+    this.setState({
+      days: [...Array(monthDate.daysInMonth())].map((_, i) => monthDate.clone().add(i, 'day')),
+    })
+  }
+
+  render () {
+    const { days } = this.state
+
+    return (
+      <div className="calendar">
+        <h5 className="calendar-title">{month()}</h5>
+
+        <div className="calendar-days">
+          {weekdaysMin().map(day => (
+            <strong key={day} className="calendar-weekday">{ day }</strong>
+          ))}
+
+          {days.map((day, index) => (
+            <span
+              key={day.format('lll')}
+              className={
+                classnames('calendar-day', {
+                  today: today(day),
+                })
+              }
+              style={{
+                gridColumn: columnDay(index, days),
+              }}
+            >
+              { day.format('D') }
+            </span>
+          ))}
+        </div>
+      </div>
+    )
+  }
+}
+
+export default App
