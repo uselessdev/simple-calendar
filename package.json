@@ -2,6 +2,7 @@
   "name": "simple-calendar-grid",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://uselessdev.github.io/simple-calendar",
   "dependencies": {
     "classnames": "^2.2.6",
     "moment": "^2.24.0",
@@ -13,7 +14,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -28,6 +31,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "eslint-config-pagarme-react": "^1.5.0"
+    "eslint-config-pagarme-react": "^1.5.0",
+    "gh-pages": "^2.0.1"
   }
 }
